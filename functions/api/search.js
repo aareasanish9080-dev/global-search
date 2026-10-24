@@ -46,10 +46,8 @@ export async function onRequest({ request, env }) {
         query: query,
         search_depth: "basic",
         max_results: 8,
-        include_answer: true
-        include_images: true
         include_answer: true,
-include_images: true
+        include_images: true
       })
     });
 
