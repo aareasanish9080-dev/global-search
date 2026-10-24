@@ -47,7 +47,6 @@ export async function onRequest({ request, env }) {
         search_depth: "basic",
         max_results: 8,
         include_answer: true,
-        include_images: true
       })
     });
 
