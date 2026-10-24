@@ -1,6 +1,6 @@
 
 export async function onRequest({ request, env }) {
-  const cors = {
+  const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
@@ -8,67 +8,70 @@ export async function onRequest({ request, env }) {
   };
 
   if (request.method === "OPTIONS") {
-    return new Response(null, { headers: cors });
+    return new Response(null, { headers });
   }
 
   if (request.method !== "POST") {
     return Response.json(
       { error: "Please use the search box." },
-      { status: 405, headers: cors }
+      { status: 405, headers }
     );
   }
 
   try {
     const body = await request.json();
-    const q = String(body.query || body.q || "").trim();
+    const query = String(body.query || body.q || "").trim();
 
-    if (!q) {
+    if (!query) {
       return Response.json(
-        { error: "Please enter search query" },
-        { status: 400, headers: cors }
+        { error: "Please enter search query." },
+        { status: 400, headers }
       );
     }
 
-    if (!env.BRAVE_SEARCH_API_KEY) {
+    if (!env.TAVILY_API_KEY) {
       return Response.json(
-        { error: "Search API key is not configured." },
-        { status: 503, headers: cors }
+        { error: "Tavily API key is missing." },
+        { status: 503, headers }
       );
     }
 
-    const response = await fetch(
-      "https://api.search.brave.com/res/v1/web/search?q=" +
-        encodeURIComponent(q),
-      {
-        headers: {
-          "Accept": "application/json",
-          "X-Subscription-Token": env.BRAVE_SEARCH_API_KEY
-        }
-      }
-    );
+    const response = await fetch("https://api.tavily.com/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        api_key: env.TAVILY_API_KEY,
+        query,
+        search_depth: "basic",
+        max_results: 8,
+        include_answer: true
+      })
+    });
 
     if (!response.ok) {
       return Response.json(
-        { error: "Search provider error. Check API key." },
-        { status: 502, headers: cors }
+        { error: "Search provider error. Check your API key and usage limits." },
+        { status: 502, headers }
       );
     }
 
     const data = await response.json();
-    const results = (data.web?.results || []).map(item => ({
-      title: item.title,
-      url: item.url,
-      description: item.description
-    }));
 
-    return Response.json(
-      { query: q, results },
-      { headers: cors }
-    );
-  } catch (error) {
+    return Response.json({
+      query,
+      answer: data.answer || "",
+      results: (data.results || []).map(item => ({
+        title: item.title,
+        url: item.url,
+        description: item.content
+      }))
+    }, { headers });
+  } catch {
     return Response.json(
       { error: "Search failed. Please try again." },
-      { status: 500, headers: cors }
+      { status: 500, headers }
     );
   }
 }
