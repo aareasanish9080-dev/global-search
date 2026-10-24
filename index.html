@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0b1020">
 <meta name="description" content="Global Search — explore the web, understand more. AI-assisted search with source links.">
 <title>Global Search — Explore the world</title>
-href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%234f7cff'/%3E%3Ccircle cx='43' cy='43' r='24' fill='none' stroke='white' stroke-width='8'/%3E%3Cpath d='M61 61 L80 80' stroke='white' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%234f7cff'/%3E%3Ccircle cx='43' cy='43' r='24' fill='none' stroke='white' stroke-width='8'/%3E%3Cpath d='M61 61 L80 80' stroke='white' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
 
 /* Search images layout */
 .image-results {
@@ -74,6 +74,59 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
     <div id="loading" class="loading hidden"><span class="spinner"></span><span>Searching the web and preparing results…</span></div>
     <div id="error" class="error hidden"></div>
     <article id="answerCard" class="answer hidden"><div class="answer-label"><span class="spark">✦</span> Global AI answer</div><p id="answerText"></p><p class="small">AI-generated summary. Check the source links below for details.</p></article>
+    <div id="sourceList" class="source-list"></div>
+  </section>
+  <div id="imageResults" class="image-results"></div>
+  
+</section>
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head"><h2>Search with more clarity.</h2><p>Designed to bring answers and useful sources closer together.</p></div>
+    <div class="grid">
+      <article class="feature"><div class="ico">⌕</div><h3>Web discovery</h3><p>Find relevant pages and explore source links instead of relying on a single answer.</p></article>
+      <article class="feature"><div class="ico">✦</div><h3>AI-assisted answers</h3><p>Get a concise summary based on search results, with sources to help you verify important details.</p></article>
+      <article class="feature"><div class="ico">↗</div><h3>Simple by design</h3><p>A clean, responsive experience made for phones, tablets, and desktop screens.</p></article>
+    </div>
+    <div class="notice" id="about"><strong>Early version:</strong> Global Search is an independent prototype, not affiliated with Google. Live search and AI answers work after an administrator configures the API keys described in the setup guide. Search results and AI summaries may be incomplete or incorrect; verify important information with original sources.</div>
+  </div>
+</section>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><span>© <span id="year"></span> Global Search · Explore the world. Understand more.</span><span>Independent search prototype · <a href="mailto:hello@globalsearch.example">Contact</a></span></div></footer>
+<script>
+const form=document.getElementById('searchForm'),queryInput=document.getElementById('query'),searchBtn=document.getElementById('searchBtn'),results=document.getElementById('results'),loading=document.getElementById('loading'),errorBox=document.getElementById('error'),answerCard=document.getElementById('answerCard'),answerText=document.getElementById('answerText'),sourceList=document.getElementById('sourceList'),caption=document.getElementById('resultCaption');
+let mode='ai',controller=null;
+document.getElementById('year').textContent=new Date().getFullYear();
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{queryInput.value=b.dataset.q;runSearch()}));
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));if(queryInput.value.trim())runSearch()}));
+form.addEventListener('submit',e=>{e.preventDefault();runSearch()});
+document.getElementById('clearBtn').addEventListener('click',()=>{results.classList.add('hidden');queryInput.focus()});
+function safeText(v){return typeof v==='string'?v:''}
+function makeSource(item){
+ const card=document.createElement('article');card.className='source';
+ const title=document.createElement('a');title.textContent=safeText(item.title)||safeText(item.url)||'Open source';title.href=safeText(item.url)||'#';title.target='_blank';title.rel='noopener noreferrer';
+ const url=document.createElement('div');url.className='url';url.textContent=safeText(item.url);
+ const desc=document.createElement('p');desc.textContent=safeText(item.description)||'Open this source to read more.';
+ card.append(title,url,desc);return card;
+}
+async function runSearch(){
+ const q=queryInput.value.trim();if(!q){queryInput.focus();return}
+ if(controller)controller.abort();controller=new AbortController();
+ results.classList.remove('hidden');loading.classList.remove('hidden');errorBox.classList.add('hidden');answerCard.classList.add('hidden');sourceList.replaceChildren();caption.textContent='Results for “'+q+'”';searchBtn.disabled=true;
+ try{
+  const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,mode}),signal:controller.signal});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(data.error||'Search could not be completed. Check API setup and try again.');
+  if(mode==='ai'&&data.answer){answerText.textContent=data.answer;answerCard.classList.remove('hidden')}
+  const sources=Array.isArray(data.results)?data.results:[];
+  sources.forEach(item=>{if(item&&/^https?:\/\//i.test(item.url||''))sourceList.appendChild(makeSource(item))});
+  if(!sources.length&&!data.answer)throw new Error('No results returned. Check the search API configuration or try another query.');
+  if(!sources.length){const note=document.createElement('div');note.className='empty';note.textContent='No source links were returned. Try Web results or another query.';sourceList.appendChild(note)}
+ }catch(err){if(err.name!=='AbortError'){errorBox.textContent=err.message||'Something went wrong. Please try again.';errorBox.classList.remove('hidden')}}
+ finally{loading.classList.add('hidden');searchBtn.disabled=false}
+}
+</script>
+</body>
+</html>heck the source links below for details.</p></article>
     <div id="sourceList" class="source-list"></div>
   </section>
   <div id="imageResults" class="image-results"></div>
