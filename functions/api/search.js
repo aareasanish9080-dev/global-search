@@ -68,7 +68,6 @@ export async function onRequest({ request, env }) {
   description: item.content || ""
 })),
 images: data.images || []
-    }, { headers });
 
   } catch (error) {
     return Response.json(
