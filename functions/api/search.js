@@ -13,7 +13,7 @@ export async function onRequest({ request, env }) {
 
   if (request.method !== "POST") {
     return Response.json(
-      { error: "Please use the search box." },
+      { error: "Use the search box to search." },
       { status: 405, headers }
     );
   }
@@ -29,21 +29,21 @@ export async function onRequest({ request, env }) {
       );
     }
 
-    if (!env.TAVILY_API_KEY) {
+    const apiKey = env.TAVILY_API_KEY;
+
+    if (!apiKey) {
       return Response.json(
-        { error: "Tavily API key is missing." },
+        { error: "API key missing. Check Cloudflare Production secret TAVILY_API_KEY." },
         { status: 503, headers }
       );
     }
 
     const response = await fetch("https://api.tavily.com/search", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        api_key: env.TAVILY_API_KEY,
-        query,
+        api_key: apiKey,
+        query: query,
         search_depth: "basic",
         max_results: 8,
         include_answer: true
@@ -52,7 +52,7 @@ export async function onRequest({ request, env }) {
 
     if (!response.ok) {
       return Response.json(
-        { error: "Search provider error. Check your API key and usage limits." },
+        { error: "Tavily API error. Check the key and usage limits." },
         { status: 502, headers }
       );
     }
@@ -60,18 +60,20 @@ export async function onRequest({ request, env }) {
     const data = await response.json();
 
     return Response.json({
-      query,
+      query: query,
       answer: data.answer || "",
       results: (data.results || []).map(item => ({
         title: item.title,
         url: item.url,
-        description: item.content
+        description: item.content || ""
       }))
     }, { headers });
-  } catch {
+
+  } catch (error) {
     return Response.json(
       { error: "Search failed. Please try again." },
       { status: 500, headers }
     );
   }
 }
+
