@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101426">
+  <meta name="description" content="Global Search — search the web and explore related images.">
+  <title>Global Search</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%8E%3C/text%3E%3C/svg%3E">
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#121a30;--panel2:#18223d;--text:#f5f7ff;--muted:#aab4d0;--accent:#7c8cff;--accent2:#45d6c5;--border:rgba(255,255,255,.1)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(ellipse at top,#1b2850 0%,var(--bg) 52%);color:var(--text);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    button,input{font:inherit}
+    .wrap{width:min(100% - 32px,1000px);margin:auto}
+    header{padding:24px 0 10px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-size:1.2rem;font-weight:800;letter-spacing:.2px}
+    .brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#091020;font-size:22px;box-shadow:0 8px 28px #5367ff35}
+    .hero{text-align:center;padding:55px 0 34px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:#ffffff08;padding:6px 12px;border-radius:999px;color:#cbd3ff;font-size:.85rem}
+    h1{font-size:clamp(2.35rem,7vw,4.5rem);line-height:1.05;letter-spacing:-2px;margin:20px 0 14px}
+    h1 span{background:linear-gradient(90deg,#9daaff,#6be6d7);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .sub{color:var(--muted);max-width:620px;margin:0 auto 27px}
+    .search-form{display:flex;gap:10px;padding:9px;background:#111a30;border:1px solid #ffffff1c;border-radius:18px;box-shadow:0 18px 60px #0005;max-width:760px;margin:auto}
+    .search-form input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:var(--text);padding:10px 12px}
+    .search-form input::placeholder{color:#8793b4}
+    .primary{border:0;border-radius:12px;padding:12px 20px;background:linear-gradient(135deg,var(--accent),#6977ff);color:white;font-weight:750;cursor:pointer;transition:transform .2s,opacity .2s}
+    .primary:hover{transform:translateY(-1px)}
+    .primary:disabled{opacity:.55;cursor:wait}
+    .modes{display:flex;justify-content:center;gap:8px;margin:17px 0 18px;flex-wrap:wrap}
+    .mode{border:1px solid var(--border);border-radius:999px;padding:7px 14px;background:#ffffff07;color:var(--muted);cursor:pointer}
+    .mode.active{background:#7c8cff25;color:#e3e7ff;border-color:#8996ff88}
+    .quick{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+    .chip{border:1px solid var(--border);border-radius:999px;padding:7px 11px;background:#ffffff05;color:#c2cbe4;cursor:pointer;font-size:.88rem}
+    .chip:hover{background:#ffffff10}
+    .results{padding:22px 0 60px;animation:fadeIn .4s ease both}
+    .hidden{display:none!important}
+    .result-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+    .result-top h2{font-size:1.25rem;margin:0}
+    .muted{color:var(--muted);font-size:.9rem}
+    .clear{border:1px solid var(--border);border-radius:10px;background:#ffffff08;color:#d9e0f6;padding:7px 12px;cursor:pointer}
+    .answer{border:1px solid #8796ff55;background:linear-gradient(135deg,#7c8cff15,#45d6c508);border-radius:18px;padding:19px;margin-bottom:18px}
+    .answer h3{margin:0 0 8px;font-size:1rem}
+    .answer p{margin:0;white-space:pre-wrap}
+    .source-list{display:grid;gap:12px}
+    .source{border:1px solid var(--border);border-radius:15px;padding:16px;background:linear-gradient(140deg,#ffffff08,#ffffff03);transition:border-color .2s,transform .2s;animation:fadeIn .35s ease both}
+    .source:hover{border-color:#8796ff77;transform:translateY(-2px)}
+    .source a{font-weight:750;color:#c4ccff;text-decoration:none;overflow-wrap:anywhere}
+    .source a:hover{text-decoration:underline}
+    .source .url{font-size:.8rem;color:#7be1c9;overflow-wrap:anywhere;margin-top:4px}
+    .source p{color:#c0c9df;margin:9px 0 0}
+    .image-heading{font-size:1.15rem;margin:28px 0 12px}
+    .image-results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .image-card{display:block;overflow:hidden;border:1px solid var(--border);border-radius:14px;background:#ffffff08;color:var(--text);text-decoration:none;animation:fadeIn .45s ease both;min-width:0}
+    .image-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#18223d}
+    .image-card span{display:block;padding:8px 10px;font-size:.83rem;color:#d7def2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .image-card:hover{border-color:#8796ff99}
+    .loading{display:flex;align-items:center;gap:10px;color:var(--muted);padding:15px 0}
+    .spinner{width:19px;height:19px;border:2px solid #ffffff2a;border-top-color:var(--accent2);border-radius:50%;animation:spin .8s linear infinite}
+    .error{border:1px solid #ff828255;background:#ff5b5b12;border-radius:13px;padding:13px 15px;color:#ffb7b7;margin:15px 0}
+    .empty{border:1px dashed var(--border);border-radius:13px;padding:18px;color:var(--muted)}
+    footer{text-align:center;color:#7f8aa9;font-size:.85rem;padding:25px 0 35px;border-top:1px solid #ffffff0b}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:650px){.hero{padding:38px 0 25px}h1{letter-spacing:-1.3px}.search-form{padding:6px;gap:4px}.search-form input{padding:10px 8px;font-size:.95rem}.primary{padding:10px 13px}.image-results{grid-template-columns:repeat(2,minmax(0,1fr))}.source{padding:14px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <a class="brand" href="./" aria-label="Global Search home"><span class="brand-mark">⌕</span><span>Global Search</span></a>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">✦ One search. A world of answers.</div>
+      <h1>Explore beyond <span>the obvious.</span></h1>
+      <p class="sub">Search the web, discover useful sources, and find related images — all in one simple place.</p>
+      <form class="search-form" id="searchForm">
+        <input id="query" name="query" type="search" placeholder="What do you want to discover?" autocomplete="off" aria-label="Search query" required>
+        <button class="primary" id="searchBtn" type="submit">Search ↗</button>
+      </form>
+      <div class="modes" aria-label="Search mode">
+        <button class="mode active" type="button" data-mode="ai">AI answer + web</button>
+        <button class="mode" type="button" data-mode="web">Web results</button>
+      </div>
+      <div class="quick" aria-label="Popular searches">
+        <button class="chip" type="button" data-q="Latest technology news">Technology</button>
+        <button class="chip" type="button" data-q="Best places to visit in India">Travel</button>
+        <button class="chip" type="button" data-q="Learn digital marketing for beginners">Learning</button>
+        <button class="chip" type="button" data-q="Space discoveries">Space</button>
+      </div>
+    </section>
+
+    <div id="error" class="error hidden" role="alert"></div>
+    <div id="loading" class="loading hidden" aria-live="polite"><span class="spinner"></span><span>Searching the web…</span></div>
+
+    <section class="results hidden" id="results" aria-live="polite">
+      <div class="result-top">
+        <div><h2>Search results</h2><div class="muted" id="resultCaption"></div></div>
+        <button class="clear" id="clearBtn" type="button">Clear results</button>
+      </div>
+      <article class="answer hidden" id="answerCard"><h3>✦ AI summary</h3><p id="answerText"></p></article>
+      <div class="source-list" id="sourceList"></div>
+      <h3 id="imageHeading" class="image-heading hidden">Related images</h3>
+      <div id="imageResults" class="image-results"></div>
+    </section>
+  </main>
+
+  <footer class="wrap">© <span id="year"></span> Global Search · Search smarter, discover more.</footer>
+
+  <script>
+    const form = document.getElementById('searchForm');
+    const queryInput = document.getElementById('query');
+    const searchBtn = document.getElementById('searchBtn');
+    const results = document.getElementById('results');
+    const loading = document.getElementById('loading');
+    const errorBox = document.getElementById('error');
+    const answerCard = document.getElementById('answerCard');
+    const answerText = document.getElementById('answerText');
+    const sourceList = document.getElementById('sourceList');
+    const caption = document.getElementById('resultCaption');
+    const imageResults = document.getElementById('imageResults');
+    const imageHeading = document.getElementById('imageHeading');
+    let mode = 'ai';
+    let controller = null;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.querySelectorAll('[data-q]').forEach(button => {
+      button.addEventListener('click', () => {
+        queryInput.value = button.dataset.q || '';
+        runSearch();
+      });
+    });
+
+    document.querySelectorAll('[data-mode]').forEach(button => {
+      button.addEventListener('click', () => {
+        mode = button.dataset.mode || 'ai';
+        document.querySelectorAll('[data-mode]').forEach(item => item.classList.toggle('active', item === button));
+        if (queryInput.value.trim()) runSearch();
+      });
+    });
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      runSearch();
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (controller) controller.abort();
+      results.classList.add('hidden');
+      errorBox.classList.add('hidden');
+      loading.classList.add('hidden');
+      sourceList.replaceChildren();
+      imageResults.replaceChildren();
+      imageHeading.classList.add('hidden');
+      answerCard.classList.add('hidden');
+      queryInput.focus();
+    });
+
+    function safeText(value) {
+      return typeof value === 'string' ? value : '';
+    }
+
+    function makeSource(item) {
+      const card = document.createElement('article');
+      card.className = 'source';
+      const title = document.createElement('a');
+      title.textContent = safeText(item.title) || safeText(item.url) || 'Open source';
+      title.href = safeText(item.url) || '#';
+      title.target = '_blank';
+      title.rel = 'noopener noreferrer';
+
+      const url = document.createElement('div');
+      url.className = 'url';
+      url.textContent = safeText(item.url);
+
+      const description = document.createElement('p');
+      description.textContent = safeText(item.description) || 'Open this source to read more.';
+      card.append(title, url, description);
+      return card;
+    }
+
+    function makeImage(item, index) {
+      const imageUrl = typeof item === 'string' ? item : safeText(item && (item.url || item.image_url || item.src));
+      if (!/^https?:\\/\\//i.test(imageUrl)) return null;
+
+      const card = document.createElement('a');
+      card.className = 'image-card';
+      card.href = imageUrl;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.alt = safeText(item && item.description) || safeText(item && item.title) || 'Related search image';
+      img.loading = 'lazy';
+      img.referrerPolicy = 'no-referrer';
+      img.onerror = () => card.remove();
+
+      const label = document.createElement('span');
+      label.textContent = safeText(item && (item.description || item.title || item.name)) || `Related image ${index + 1}`;
+      card.append(img, label);
+      return card;
+    }
+
+    async function runSearch() {
+      const query = queryInput.value.trim();
+      if (!query) {
+        queryInput.focus();
+        return;
+      }
+
+      if (controller) controller.abort();
+      controller = new AbortController();
+
+      results.classList.remove('hidden');
+      loading.classList.remove('hidden');
+      errorBox.classList.add('hidden');
+      answerCard.classList.add('hidden');
+      imageHeading.classList.add('hidden');
+      sourceList.replaceChildren();
+      imageResults.replaceChildren();
+      caption.textContent = `Results for “${query}”`;
+      searchBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query, mode }),
+          signal: controller.signal
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Search could not be completed. Check your API setup and try again.');
+        }
+
+        if (mode === 'ai' && data.answer) {
+          answerText.textContent = safeText(data.answer);
+          answerCard.classList.remove('hidden');
+        }
+
+        const sources = Array.isArray(data.results) ? data.results : [];
+        sources.forEach(item => {
+          if (item && /^https?:\\/\\//i.test(item.url || '')) sourceList.appendChild(makeSource(item));
+        });
+
+        const images = Array.isArray(data.images) ? data.images : [];
+        images.forEach((item, index) => {
+          const card = makeImage(item, index);
+          if (card) imageResults.appendChild(card);
+        });
+        if (imageResults.children.length) imageHeading.classList.remove('hidden');
+
+        if (!sourceList.children.length && !data.answer && !imageResults.children.length) {
+          throw new Error('No results returned. Check your search API configuration or try another query.');
+        }
+        if (!sourceList.children.length && !data.answer && imageResults.children.length) {
+          const note = document.createElement('div');
+          note.className = 'empty';
+          note.textContent = 'Image results are available below.';
+          sourceList.appendChild(note);
+        }
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          errorBox.textContent = error.message || 'Something went wrong. Please try again.';
+          errorBox.classList.remove('hidden');
+        }
+      } finally {
+        loading.classList.add('hidden');
+        searchBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
