@@ -47,7 +47,8 @@ export async function onRequest({ request, env }) {
         search_depth: "basic",
         max_results: 8,
         include_answer: true,
-        include_images: true
+        include_answer: true,
+include_images: true
       })
     });
 
@@ -64,10 +65,11 @@ export async function onRequest({ request, env }) {
       query: query,
       answer: data.answer || "",
       results: (data.results || []).map(item => ({
-        title: item.title,
-        url: item.url,
-        description: item.content || ""
-      }))
+  title: item.title,
+  url: item.url,
+  description: item.content || ""
+})),
+images: data.images || []
     }, { headers });
 
   } catch (error) {
