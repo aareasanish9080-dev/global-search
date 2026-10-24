@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Global Search — explore the web, understand more. AI-assisted search with source links.">
+<title>Global Search — Explore the world</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%234f7cff'/%3E%3Ccircle cx='43' cy='43' r='24' fill='none' stroke='white' stroke-width='8'/%3E%3Cpath d='M61 61 L80 80' stroke='white' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#0b1020;--panel:#111a30;--panel2:#0f172a;--line:#273450;--text:#edf3ff;--muted:#9caecc;--blue:#6b8cff;--cyan:#55d6d0;--shadow:0 22px 70px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#203b76 0%,var(--bg) 55%);color:var(--text);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.wrap{width:min(1100px,calc(100% - 36px));margin:auto}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}.brand{display:flex;align-items:center;gap:11px;font-weight:750;font-size:19px;letter-spacing:-.5px}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,#6b8cff,#53d9d1);display:grid;place-items:center;color:#07101f;box-shadow:0 6px 24px #6b8cff44}.navlinks{display:flex;gap:22px;align-items:center}.navlinks a,.footer a{color:var(--muted);text-decoration:none;font-size:14px}.navlinks a:hover,.footer a:hover{color:white}.pill{border:1px solid #ffffff22;padding:8px 13px;border-radius:999px;color:#dce7ff;font-size:13px}.hero{padding:78px 0 34px;text-align:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#c7d7ff;background:#6b8cff16;border:1px solid #6b8cff38;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}h1{font-size:clamp(42px,8vw,76px);line-height:1.04;letter-spacing:-3px;margin:23px 0 17px}h1 span{background:linear-gradient(100deg,#8ba5ff,#59e1d5);color:transparent;background-clip:text}.sub{max-width:590px;margin:0 auto;color:var(--muted);font-size:17px}.searchbox{max-width:760px;margin:32px auto 14px;padding:8px;display:flex;gap:8px;align-items:center;background:#121c32;border:1px solid #394a6d;border-radius:20px;box-shadow:var(--shadow)}.searchbox:focus-within{border-color:#7f9bff;box-shadow:0 0 0 4px #6b8cff19,var(--shadow)}.searchicon{margin-left:12px;color:#a8bbdf;flex-shrink:0}.searchbox input{min-width:0;flex:1;background:transparent;border:0;outline:0;color:white;padding:13px 4px}.searchbox input::placeholder{color:#8292b0}.primary{border:0;border-radius:13px;padding:13px 19px;font-weight:750;color:#091326;background:linear-gradient(110deg,#9bb0ff,#66e1d8);box-shadow:0 6px 20px #6b8cff25}.primary:disabled{opacity:.55;cursor:wait}.suggestions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0 0}.suggestions button{background:#ffffff07;border:1px solid #ffffff17;border-radius:999px;padding:7px 12px;color:#bac8e3;font-size:13px}.suggestions button:hover{background:#ffffff12;color:white}.tabs{display:flex;justify-content:center;gap:8px;margin:30px 0 0}.tab{background:transparent;border:1px solid transparent;color:#92a3c2;padding:9px 15px;border-radius:12px}.tab.active{background:#6b8cff18;border-color:#6b8cff44;color:#e2eaff}.results{max-width:800px;margin:28px auto 0;text-align:left}.result-top{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:13px;margin:12px 0}.answer{background:linear-gradient(140deg,#182746,#111a30);border:1px solid #3b4e74;border-radius:20px;padding:23px;margin:16px 0 25px}.answer-label{display:flex;align-items:center;gap:8px;font-weight:750;margin-bottom:11px}.spark{color:#75e0d6}.answer p{white-space:pre-wrap;color:#dce6fb;margin:0}.source-list{display:grid;gap:12px}.source{padding:18px;border:1px solid #273650;background:#0e172a99;border-radius:16px;transition:.15s}.source:hover{border-color:#627bb6;transform:translateY(-1px)}.source a{color:#a9bbff;text-decoration:none;font-weight:700;font-size:17px}.source a:hover{text-decoration:underline}.source .url{font-size:12px;color:#6fd7ca;overflow-wrap:anywhere;margin:4px 0 7px}.source p{color:#aebdd7;margin:0;font-size:14px}.empty{border:1px dashed #354565;border-radius:18px;padding:24px;color:var(--muted);text-align:center}.features{padding:75px 0}.section-head{text-align:center;max-width:650px;margin:0 auto 30px}.section-head h2{font-size:clamp(28px,4vw,40px);letter-spacing:-1px;margin:0 0 10px}.section-head p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.feature{border:1px solid #ffffff14;border-radius:18px;padding:23px;background:linear-gradient(140deg,#ffffff08,#ffffff03)}.feature .ico{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#6b8cff1b;color:#a8bbff;font-size:20px}.feature h3{margin:15px 0 7px;font-size:17px}.feature p{color:var(--muted);font-size:14px;margin:0}.notice{margin:28px auto 0;max-width:800px;border:1px solid #a889423d;background:#a8894210;color:#d6cba9;border-radius:14px;padding:14px 16px;font-size:13px}.footer{border-top:1px solid #ffffff12;padding:25px 0 32px;color:#8190ac;font-size:13px}.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.loading{display:flex;align-items:center;gap:10px;color:var(--muted);padding:20px}.spinner{width:18px;height:18px;border:2px solid #354565;border-top-color:#8ba5ff;border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.hidden{display:none!important}.error{color:#ffb5b5;background:#4b2028;border:1px solid #8e3945;padding:12px 15px;border-radius:12px;margin:12px 0}.small{font-size:12px;color:#7586a5;margin-top:15px}@media(max-width:700px){.nav{height:65px}.navlinks{gap:12px}.navlinks a:not(.pill){display:none}.hero{padding:57px 0 25px}h1{letter-spacing:-2px}.sub{font-size:15px}.searchbox{border-radius:17px}.searchbox input{padding:10px 1px;font-size:15px}.primary{padding:12px 13px}.grid{grid-template-columns:1fr}.features{padding:54px 0}.feature{padding:19px}.tabs{gap:3px}.tab{padding:8px 10px;font-size:13px}.answer{padding:18px}.source{padding:15px}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap nav">
+  <a class="brand" href="#" style="text-decoration:none;color:inherit"><span class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M7 10.5h7M10.5 7v7" stroke="currentColor" stroke-width="1.2" opacity=".65"/></svg></span>Global Search</a>
+  <nav class="navlinks"><a href="#features">Features</a><a href="#about">About</a><a class="pill" href="#search">Try search ↗</a></nav>
+</header>
+<main>
+<section class="wrap hero" id="search">
+  <div class="eyebrow"><span class="dot"></span> Your window to the web</div>
+  <h1>Explore the world.<br><span>Understand more.</span></h1>
+  <p class="sub">A smarter way to discover information. Search the web, explore useful sources, and get AI-assisted answers in one place.</p>
+  <form class="searchbox" id="searchForm">
+    <svg class="searchicon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <input id="query" autocomplete="off" aria-label="Search the web" placeholder="Ask anything or search the web…" maxlength="500">
+    <button class="primary" id="searchBtn" type="submit">Search ↗</button>
+  </form>
+  <div class="suggestions" aria-label="Try a search">
+    <button type="button" data-q="What is artificial intelligence?">✦ Artificial intelligence</button>
+    <button type="button" data-q="Latest space discoveries">Space discoveries</button>
+    <button type="button" data-q="How to start a small business in India">Small business ideas</button>
+    <button type="button" data-q="Climate change explained simply">Climate change</button>
+  </div>
+  <div class="tabs" aria-label="Search mode">
+    <button class="tab active" data-mode="ai" type="button">✦ AI + Web</button>
+    <button class="tab" data-mode="web" type="button">⌕ Web results</button>
+  </div>
+  <section class="results hidden" id="results" aria-live="polite">
+    <div class="result-top"><span id="resultCaption">Search results</span><button id="clearBtn" class="tab" type="button">Clear</button></div>
+    <div id="loading" class="loading hidden"><span class="spinner"></span><span>Searching the web and preparing results…</span></div>
+    <div id="error" class="error hidden"></div>
+    <article id="answerCard" class="answer hidden"><div class="answer-label"><span class="spark">✦</span> Global AI answer</div><p id="answerText"></p><p class="small">AI-generated summary. Check the source links below for details.</p></article>
+    <div id="sourceList" class="source-list"></div>
+  </section>
+</section>
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head"><h2>Search with more clarity.</h2><p>Designed to bring answers and useful sources closer together.</p></div>
+    <div class="grid">
+      <article class="feature"><div class="ico">⌕</div><h3>Web discovery</h3><p>Find relevant pages and explore source links instead of relying on a single answer.</p></article>
+      <article class="feature"><div class="ico">✦</div><h3>AI-assisted answers</h3><p>Get a concise summary based on search results, with sources to help you verify important details.</p></article>
+      <article class="feature"><div class="ico">↗</div><h3>Simple by design</h3><p>A clean, responsive experience made for phones, tablets, and desktop screens.</p></article>
+    </div>
+    <div class="notice" id="about"><strong>Early version:</strong> Global Search is an independent prototype, not affiliated with Google. Live search and AI answers work after an administrator configures the API keys described in the setup guide. Search results and AI summaries may be incomplete or incorrect; verify important information with original sources.</div>
+  </div>
+</section>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><span>© <span id="year"></span> Global Search · Explore the world. Understand more.</span><span>Independent search prototype · <a href="mailto:hello@globalsearch.example">Contact</a></span></div></footer>
+<script>
+const form=document.getElementById('searchForm'),queryInput=document.getElementById('query'),searchBtn=document.getElementById('searchBtn'),results=document.getElementById('results'),loading=document.getElementById('loading'),errorBox=document.getElementById('error'),answerCard=document.getElementById('answerCard'),answerText=document.getElementById('answerText'),sourceList=document.getElementById('sourceList'),caption=document.getElementById('resultCaption');
+let mode='ai',controller=null;
+document.getElementById('year').textContent=new Date().getFullYear();
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{queryInput.value=b.dataset.q;runSearch()}));
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));if(queryInput.value.trim())runSearch()}));
+form.addEventListener('submit',e=>{e.preventDefault();runSearch()});
+document.getElementById('clearBtn').addEventListener('click',()=>{results.classList.add('hidden');queryInput.focus()});
+function safeText(v){return typeof v==='string'?v:''}
+function makeSource(item){
+ const card=document.createElement('article');card.className='source';
+ const title=document.createElement('a');title.textContent=safeText(item.title)||safeText(item.url)||'Open source';title.href=safeText(item.url)||'#';title.target='_blank';title.rel='noopener noreferrer';
+ const url=document.createElement('div');url.className='url';url.textContent=safeText(item.url);
+ const desc=document.createElement('p');desc.textContent=safeText(item.description)||'Open this source to read more.';
+ card.append(title,url,desc);return card;
+}
+async function runSearch(){
+ const q=queryInput.value.trim();if(!q){queryInput.focus();return}
+ if(controller)controller.abort();controller=new AbortController();
+ results.classList.remove('hidden');loading.classList.remove('hidden');errorBox.classList.add('hidden');answerCard.classList.add('hidden');sourceList.replaceChildren();caption.textContent='Results for “'+q+'”';searchBtn.disabled=true;
+ try{
+  const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,mode}),signal:controller.signal});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(data.error||'Search could not be completed. Check API setup and try again.');
+  if(mode==='ai'&&data.answer){answerText.textContent=data.answer;answerCard.classList.remove('hidden')}
+  const sources=Array.isArray(data.results)?data.results:[];
+  sources.forEach(item=>{if(item&&/^https?:\/\//i.test(item.url||''))sourceList.appendChild(makeSource(item))});
+  if(!sources.length&&!data.answer)throw new Error('No results returned. Check the search API configuration or try another query.');
+  if(!sources.length){const note=document.createElement('div');note.className='empty';note.textContent='No source links were returned. Try Web results or another query.';sourceList.appendChild(note)}
+ }catch(err){if(err.name!=='AbortError'){errorBox.textContent=err.message||'Something went wrong. Please try again.';errorBox.classList.remove('hidden')}}
+ finally{loading.classList.add('hidden');searchBtn.disabled=false}
+}
+</script>
+</body>
+</html>
